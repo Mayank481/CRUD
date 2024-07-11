@@ -1,0 +1,186 @@
+swagger : "2.0"
+info:
+  title: "This is CRUD Operation APi's"
+  description: This is company documentation made by Mayank Jaggi.
+  version: 1.0
+  contact:
+    name: Mayank Jaggi
+    email: jaggi.mayank19@gmail.com
+  basePath: "/"
+  servers:
+    -url: "http://localhost:4000/"
+    description: This is local server.
+    -url: "https://www.google.com/"
+    description: This is my company website.
+securityDefinitions:
+  bearerAuth:
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+
+schemes: [http,https]
+
+paths:
+# Register user
+  /api/user/register:
+    post:
+      summary: Creating User in database.
+      description: Register user in database.
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          schema:
+            $ref: "#/components/schemas/user"
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        400:
+          description: User Error
+        500:
+          description: Internal Server Error
+
+#Login User
+
+  /api/user/login:
+    post:
+      summary: Login user.
+      description: This api for login user.
+      produce: 
+        - application/json
+      consumes:
+        - application/json
+      parameters: 
+        - in: body
+          name: user
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        400:
+          description: User Error
+        500:
+          description: Internal Server Error
+
+#Fetching Users Data
+
+  /api/user/users:
+    get:
+      summary: Return a users data
+      description: It is just returning a users data
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              type: object
+          400:
+           description: User Error
+          500:
+            description: Internal Server Error
+
+#Fetching user data by ID
+
+  /api/user/users/{userId}:
+    get:
+      summary: Return a user data.
+      description: It is just returning a user data.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true                                      
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        400:
+          description: User Error
+        500:
+          description: Internal Server Error
+
+#Update User data
+  /api/user/updateuser/{userId}:
+    put:
+      summary: Update User Data.
+      description: Update User data.
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: "string"
+          description: "User ID"
+        - name: user
+          in: body
+          required: true
+          schema:
+            $ref: "#/components/schemas/user"
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        400:
+          description: User Error
+        500:
+          description: Internal Server Error
+
+#Delete User Data
+  /api/user/deleteuser/{userId}:
+    delete:
+      summary: Delete a user data.
+      description: It is just Deleting a user data.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true                                      
+      responses:
+        200:
+          description: Success
+        400:
+          description: User Error
+        500:
+          description: Internal Server Error
+#user Schema                                  
+components:
+  schemas:
+    user:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName: 
+          type: string
+        phoneNumber:
+          type: number
+          format: phoneNumber
+        email:
+          type: string
+        password:
+          type: string
